@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Studies from Australia</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Space+Mono:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+
+:root {
+  --ink: #0a0a0c;
+  --paper: #f0ece4;
+  --gold: #c8a96e;
+  --gold-dim: rgba(200,169,110,0.15);
+  --gold-line: rgba(200,169,110,0.3);
+  --white-dim: rgba(240,236,228,0.04);
+  --white-mid: rgba(240,236,228,0.45);
+  --white-full: rgba(240,236,228,0.92);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Space Mono', monospace;
+  background: var(--ink);
+  color: var(--paper);
+  min-height: 100vh;
+  overflow-x: hidden;
+  cursor: crosshair;
+}
+
+/* ── CINEMATIC BACKGROUND ── */
+#scene {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.scene-layer {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 2s cubic-bezier(0.4,0,0.2,1);
+}
+.scene-layer.visible { opacity: 1; }
+
+#scene-0 {
+  background:
+    radial-gradient(ellipse 80% 60% at 15% 80%, rgba(26,58,42,0.75) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 85% 20%, rgba(10,26,10,0.5) 0%, transparent 50%),
+    linear-gradient(170deg, #050808 0%, #0a120e 50%, #060d0a 100%);
+}
+#scene-1 {
+  background:
+    radial-gradient(ellipse 70% 50% at 80% 85%, rgba(42,26,10,0.8) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 70% at 10% 15%, rgba(20,12,5,0.6) 0%, transparent 50%),
+    linear-gradient(155deg, #080604 0%, #100c06 50%, #0c0904 100%);
+}
+#scene-2 {
+  background:
+    radial-gradient(ellipse 90% 50% at 50% 90%, rgba(10,26,42,0.9) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 60% at 90% 10%, rgba(5,15,25,0.5) 0%, transparent 50%),
+    linear-gradient(160deg, #040608 0%, #060c12 50%, #04080e 100%);
+}
+#scene-3 {
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 70%, rgba(26,10,26,0.8) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 40% at 80% 20%, rgba(15,5,15,0.5) 0%, transparent 50%),
+    linear-gradient(165deg, #060408 0%, #0e080e 50%, #080408 100%);
+}
+#scene-4 {
+  background:
+    radial-gradient(ellipse 70% 70% at 60% 80%, rgba(42,42,10,0.7) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 50% at 15% 25%, rgba(20,20,5,0.5) 0%, transparent 50%),
+    linear-gradient(150deg, #070706 0%, #0e0e08 50%, #0a0a06 100%);
+}
+
+/* Film grain */
+#grain {
+  position: fixed;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  z-index: 1;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)' opacity='0.08'/%3E%3C/svg%3E");
+  opacity: 0.45;
+  animation: grainMove 7s steps(1) infinite;
+}
+@keyframes grainMove {
+  0%{transform:translate(0,0);}12%{transform:translate(-3%,-2%);}25%{transform:translate(2%,3%);}
+  37%{transform:translate(-2%,1%);}50%{transform:translate(3%,-3%);}62%{transform:translate(-1%,2%);}
+  75%{transform:translate(2%,-1%);}87%{transform:translate(-3%,3%);}100%{transform:translate(1%,-2%);}
+}
+
+/* Vignette */
+#vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(ellipse 85% 85% at 50% 50%, transparent 35%, rgba(0,0,0,0.72) 100%);
+}
+
+/* ── CONTENT ── */
+#content { position: relative; z-index: 3; }
+
+/* ── HEADER ── */
+header { padding: 72px 6vw 0; position: relative; }
+
+.h-rule {
+  width: 40px; height: 1px;
+  background: var(--gold);
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: fadeUp 0.7s 0.2s forwards;
+}
+.h-eyebrow {
+  font-size: 9px; letter-spacing: 0.35em;
+  color: var(--gold); text-transform: uppercase;
+  margin-bottom: 20px;
+  opacity: 0; animation: fadeUp 0.7s 0.35s forwards;
+}
+h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(80px, 14vw, 180px);
+  line-height: 0.88; letter-spacing: 0.02em;
+  color: var(--paper);
+  opacity: 0; animation: fadeUp 0.9s 0.5s forwards;
+}
+h1 .outline {
+  -webkit-text-stroke: 1px rgba(240,236,228,0.2);
+  color: transparent; display: block;
+}
+.h-sub {
+  margin-top: 28px; font-size: 11px;
+  font-style: italic; color: var(--white-mid);
+  line-height: 1.9; max-width: 380px;
+  opacity: 0; animation: fadeUp 0.7s 0.8s forwards;
+}
+.h-index {
+  position: absolute; top: 72px; right: 6vw;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 11px; letter-spacing: 0.2em;
+  color: rgba(200,169,110,0.3);
+  text-align: right; line-height: 2.2;
+  opacity: 0; animation: fadeIn 1s 1.1s forwards;
+}
+@keyframes fadeUp {
+  from{opacity:0;transform:translateY(18px);}
+  to{opacity:1;transform:translateY(0);}
+}
+@keyframes fadeIn {
+  from{opacity:0;} to{opacity:1;}
+}
+
+.divider {
+  margin: 64px 6vw 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold) 0%, transparent 100%);
+  opacity: 0.25;
+}
+
+/* ── CARDS ── */
+#cards-section { padding: 56px 6vw 40px; }
+
+.section-label {
+  font-size: 8px; letter-spacing: 0.4em;
+  text-transform: uppercase; color: var(--gold);
+  opacity: 0.55; margin-bottom: 36px;
+  display: flex; align-items: center; gap: 16px;
+}
+.section-label::after {
+  content: ''; flex: 1; height: 1px;
+  background: var(--gold-line); max-width: 200px;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 2px;
+}
+
+.music-card {
+  position: relative;
+  padding: 32px 28px 28px;
+  background: var(--white-dim);
+  border: 1px solid rgba(240,236,228,0.05);
+  cursor: crosshair;
+  transition: background 0.3s ease, border-color 0.3s ease;
+  transform-style: preserve-3d;
+  perspective: 800px;
+  overflow: hidden;
+}
+.music-card::before {
+  content: ''; position: absolute; inset: 0;
+  opacity: 0; transition: opacity 0.4s ease;
+  background: linear-gradient(135deg, rgba(200,169,110,0.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+.music-card::after {
+  content: ''; position: absolute;
+  top: 0; left: 0;
+  width: 22px; height: 22px;
+  border-top: 1px solid var(--gold);
+  border-left: 1px solid var(--gold);
+  opacity: 0; transition: opacity 0.3s;
+  pointer-events: none;
+}
+.music-card:hover { background: rgba(240,236,228,0.06); border-color: rgba(200,169,110,0.2); }
+.music-card:hover::before { opacity: 1; }
+.music-card:hover::after { opacity: 0.5; }
+.music-card.active { background: rgba(200,169,110,0.07); border-color: rgba(200,169,110,0.38); }
+.music-card.active::before { opacity: 1; }
+.music-card.active::after { opacity: 0.7; }
+
+.card-tap { animation: cardLift 0.65s cubic-bezier(0.34,1.4,0.64,1) forwards; }
+@keyframes cardLift {
+  0%  {transform:perspective(800px) translateZ(0) rotateX(0) rotateY(0); box-shadow:none;}
+  20% {transform:perspective(800px) translateZ(90px) rotateX(6deg) rotateY(-7deg); box-shadow:0 40px 90px rgba(0,0,0,0.85),0 0 50px rgba(200,169,110,0.12);}
+  45% {transform:perspective(800px) translateZ(110px) rotateX(-3deg) rotateY(8deg);}
+  70% {transform:perspective(800px) translateZ(60px) rotateX(2deg) rotateY(-3deg);}
+  100%{transform:perspective(800px) translateZ(0) rotateX(0) rotateY(0); box-shadow:none;}
+}
+
+.card-bg-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 72px; line-height: 1;
+  color: rgba(240,236,228,0.035);
+  position: absolute; top: 12px; right: 18px;
+  letter-spacing: 0; user-select: none;
+  transition: color 0.4s;
+}
+.music-card.active .card-bg-num { color: rgba(200,169,110,0.1); }
+
+.card-top {
+  display: flex; align-items: center;
+  gap: 10px; margin-bottom: 28px;
+}
+.card-idx { font-size: 8px; letter-spacing: 0.3em; color: var(--gold); opacity: 0.65; }
+.card-line { height: 1px; flex: 1; background: var(--gold-line); max-width: 36px; }
+.play-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  border: 1px solid rgba(200,169,110,0.35);
+  transition: all 0.3s;
+}
+.music-card.active .play-dot {
+  background: var(--gold); border-color: var(--gold);
+  box-shadow: 0 0 10px rgba(200,169,110,0.55);
+  animation: dotPulse 2s ease-in-out infinite;
+}
+@keyframes dotPulse {
+  0%,100%{box-shadow:0 0 6px rgba(200,169,110,0.4);}
+  50%{box-shadow:0 0 16px rgba(200,169,110,0.75);}
+}
+
+.card-emoji { font-size: 38px; display: block; margin-bottom: 20px; filter: grayscale(0.5) brightness(0.9); transition: filter 0.4s; }
+.music-card:hover .card-emoji, .music-card.active .card-emoji { filter: grayscale(0) brightness(1); }
+
+.card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px; font-weight: 700;
+  color: var(--white-full); line-height: 1.1;
+  margin-bottom: 4px; letter-spacing: 0.01em;
+}
+.card-place {
+  font-size: 9px; letter-spacing: 0.25em;
+  text-transform: uppercase; color: var(--gold);
+  opacity: 0.65; margin-bottom: 16px;
+}
+.card-desc {
+  font-size: 10px; color: var(--white-mid);
+  line-height: 1.9; font-style: italic;
+  border-left: 1px solid var(--gold-line);
+  padding-left: 12px;
+}
+
+.card-wave {
+  display: flex; align-items: center;
+  gap: 2px; height: 18px; margin-top: 20px;
+  opacity: 0; transition: opacity 0.5s;
+}
+.music-card.active .card-wave { opacity: 1; }
+.wb {
+  flex: 1; background: var(--gold);
+  border-radius: 1px; min-height: 2px;
+  transform-origin: center; opacity: 0.4;
+}
+.music-card.active .wb {
+  animation: wbAnim var(--wd,0.6s) ease-in-out infinite alternate;
+  animation-delay: var(--wdl,0s);
+}
+@keyframes wbAnim {
+  from{transform:scaleY(0.12);opacity:0.25;}
+  to{transform:scaleY(1);opacity:0.85;}
+}
+
+/* ── CAVE PLAYER ── */
+#cave {
+  position: sticky; bottom: 0; z-index: 20;
+  border-top: 1px solid rgba(200,169,110,0.12);
+  background: rgba(4,4,6,0.97);
+  backdrop-filter: blur(40px) saturate(0.4);
+  -webkit-backdrop-filter: blur(40px);
+}
+#cave::before {
+  content: '';
+  position: absolute; top: -1px; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--gold) 25%, var(--gold) 75%, transparent 100%);
+  opacity: 0.25;
+}
+
+.cave-wrap {
+  max-width: 1100px; margin: 0 auto;
+  padding: 18px 6vw;
+  display: grid;
+  grid-template-columns: 50px 1fr auto auto auto;
+  align-items: center;
+  gap: 20px;
+}
+
+.cave-art {
+  width: 50px; height: 50px;
+  border: 1px solid rgba(200,169,110,0.18);
+  display: flex; align-items: center;
+  justify-content: center; font-size: 20px;
+  position: relative; overflow: hidden;
+  flex-shrink: 0;
+}
+.cave-art::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(200,169,110,0.1) 0%, transparent 60%);
+  pointer-events: none;
+}
+.cave-art.spinning { animation: artSpin 14s linear infinite; }
+@keyframes artSpin { from{transform:rotate(0deg);}to{transform:rotate(360deg);} }
+
+.cave-info { min-width: 0; }
+.cave-song { font-family:'Playfair Display',serif; font-size:15px; color:var(--white-full); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:3px; }
+.cave-sub { font-size:8px; letter-spacing:0.25em; text-transform:uppercase; color:var(--gold); opacity:0.5; }
+.cave-idle { font-size:9px; letter-spacing:0.3em; text-transform:uppercase; color:rgba(200,169,110,0.28); animation:idlePulse 3.5s ease-in-out infinite; }
+@keyframes idlePulse{0%,100%{opacity:0.4;}50%{opacity:1;}}
+
+.cave-prog {
+  display: flex; flex-direction: column; gap: 7px;
+  min-width: 220px; max-width: 360px;
+}
+.cave-controls { display:flex; align-items:center; gap:4px; }
+.cbtn {
+  background: none; border: none; cursor: pointer;
+  color: var(--white-mid); padding: 5px 10px;
+  font-size: 10px; letter-spacing: 0.1em;
+  font-family: 'Space Mono', monospace;
+  transition: color 0.2s;
+}
+.cbtn:hover { color: var(--paper); }
+.cbtn.main {
+  border: 1px solid rgba(200,169,110,0.28);
+  color: var(--gold);
+  padding: 6px 18px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px; letter-spacing: 0.2em;
+  transition: all 0.2s;
+}
+.cbtn.main:hover { background: var(--gold-dim); border-color: var(--gold); }
+.cave-bar { height: 2px; background: rgba(240,236,228,0.07); cursor: pointer; }
+.cave-fill { height: 100%; background: linear-gradient(90deg, var(--gold), rgba(200,169,110,0.45)); width:0%; pointer-events:none; transition:width 0.45s linear; }
+.cave-times { display:flex; justify-content:space-between; font-size:8px; letter-spacing:0.1em; color:rgba(240,236,228,0.18); }
+
+.cave-viz {
+  display: flex; align-items: flex-end;
+  gap: 2px; height: 34px; width: 72px;
+}
+.vbar {
+  flex: 1; background: var(--gold);
+  opacity: 0.25; border-radius: 1px; min-height: 2px;
+  transform-origin: bottom;
+}
+.cave-viz.on .vbar {
+  animation: vbarAnim var(--vd,0.55s) ease-in-out infinite alternate;
+  animation-delay: var(--vdl,0s); opacity: 0.55;
+}
+@keyframes vbarAnim { from{transform:scaleY(0.07);}to{transform:scaleY(1);} }
+
+.cave-vol {
+  display: flex; align-items: center; gap: 8px;
+  flex-shrink: 0;
+}
+.cave-vol span { font-size:11px; color:rgba(200,169,110,0.35); }
+input[type=range].vol {
+  -webkit-appearance:none; width:64px; height:2px;
+  background:rgba(200,169,110,0.12); outline:none; cursor:pointer;
+}
+input[type=range].vol::-webkit-slider-thumb {
+  -webkit-appearance:none; width:8px; height:8px;
+  background:var(--gold); border-radius:0; cursor:pointer;
+}
+
+/* FOOTER */
+footer { padding:80px 6vw 160px; display:flex; align-items:flex-end; justify-content:space-between; }
+.f-big { font-family:'Bebas Neue',sans-serif; font-size:clamp(50px,8vw,100px); color:rgba(240,236,228,0.025); line-height:1; user-select:none; }
+.f-note { font-size:8px; letter-spacing:0.3em; text-transform:uppercase; color:rgba(200,169,110,0.2); text-align:right; line-height:2.4; }
+
+@media(max-width:640px){
+  .cave-wrap{grid-template-columns:50px 1fr auto auto; gap:14px;}
+  .cave-prog{display:none;}
+  .h-index{display:none;}
+}
+</style>
+</head>
+<body>
+
+<div id="scene">
+  <div class="scene-layer visible" id="scene-0"></div>
+  <div class="scene-layer" id="scene-1"></div>
+  <div class="scene-layer" id="scene-2"></div>
+  <div class="scene-layer" id="scene-3"></div>
+  <div class="scene-layer" id="scene-4"></div>
+</div>
+<div id="grain"></div>
+<div id="vignette"></div>
+
+<div id="content">
+
+  <header>
+    <div class="h-rule"></div>
+    <p class="h-eyebrow">Studies from Australia — 2024</p>
+    <h1>
+      FIVE
+      <span class="outline">STUDIES</span>
+    </h1>
+    <p class="h-sub">DeivesOS. Cinco momentos capturados em som.</p>
+    <div class="h-index">
+      I <br>
+      II <br>
+      III <br>
+      IV <br>
+      V 
+    </div>
+  </header>
+
+  <div class="divider"></div>
+
+  <section id="cards-section">
+    <div class="section-label">Selecione um study</div>
+    <div class="cards-grid" id="cards-grid"></div>
+  </section>
+
+  <footer>
+    <div class="f-big">AUSTRALIA</div>
+    <div class="f-note">Música Ambiente<br>Cinco Studies<br>2024</div>
+  </footer>
+
+</div>
+
+<!-- CAVE PLAYER -->
+<div id="cave">
+  <div class="cave-wrap">
+    <div class="cave-art" id="cave-art">
+      <span style="font-size:16px;opacity:0.15;position:relative;z-index:1;">◈</span>
+    </div>
+    <div class="cave-info" id="cave-info">
+      <div class="cave-idle">— selecione uma study para ouvir —</div>
+    </div>
+    <div class="cave-prog" id="cave-prog" style="display:none">
+      <div class="cave-controls">
+        <button class="cbtn" id="btn-prev">◀◀</button>
+        <button class="cbtn main" id="btn-play">PLAY</button>
+        <button class="cbtn" id="btn-next">▶▶</button>
+      </div>
+      <div class="cave-bar" id="cave-bar">
+        <div class="cave-fill" id="cave-fill"></div>
+      </div>
+      <div class="cave-times">
+        <span id="t-cur">0:00</span>
+        <span id="t-dur">—:——</span>
+      </div>
+    </div>
+    <div class="cave-viz" id="cave-viz"></div>
+    <div class="cave-vol">
+      <span>▸</span>
+      <input type="range" class="vol" id="vol" min="0" max="1" step="0.01" value="0.85">
+    </div>
+  </div>
+</div>
+
+<script>
+const SONGS = [
+  {id:0,title:"Study No. I",  place:"i miss you",       desc:"",   emoji:"🌅",bg:"scene-0",audio:"study-01.m4a"},
+  {id:1,title:"Study No. II", place:"open field",          desc:"",   emoji:"🌾",bg:"scene-1",audio:"study-02.m4a"},
+  {id:2,title:"Study No. III",place:"good i saw you",       desc:"",   emoji:"🏜️",bg:"scene-2",audio:"study-03.m4a"},
+  {id:3,title:"Study No. IV", place:"aftermath",      desc:"",   emoji:"🌿",bg:"scene-3",audio:"sutudy-04.m4a"},
+  {id:4,title:"Study No. V",  place:"last night",desc:"",   emoji:"🌃",bg:"scene-4",audio:"sutudy-05.m4a"}
+];
+
+let current=null, playing=false, audio=null;
+let progInt=null, simInt=null, simT=0, simD=0;
+
+// Build cards
+const grid=document.getElementById('cards-grid');
+SONGS.forEach(s=>{
+  const el=document.createElement('div');
+  el.className='music-card';
+  el.dataset.id=s.id;
+  const bars=Array.from({length:16},()=>{
+    const wd=(0.38+Math.random()*0.72).toFixed(2);
+    const wdl=(Math.random()*0.55).toFixed(2);
+    const h=(14+Math.random()*86).toFixed(0);
+    return `<div class="wb" style="height:${h}%;--wd:${wd}s;--wdl:${wdl}s"></div>`;
+  }).join('');
+  el.innerHTML=`
+    <div class="card-bg-num">${s.id+1}</div>
+    <div class="card-top">
+      <span class="card-idx">0${s.id+1}</span>
+      <div class="card-line"></div>
+      <div class="play-dot"></div>
+    </div>
+    <span class="card-emoji">${s.emoji}</span>
+    <div class="card-title">${s.title}</div>
+    <div class="card-place">${s.place}</div>
+    <div class="card-desc">${s.desc}</div>
+    <div class="card-wave">${bars}</div>
+  `;
+  el.addEventListener('click',()=>onCardClick(s,el));
+  grid.appendChild(el);
+});
+
+// Build viz bars
+const vizEl=document.getElementById('cave-viz');
+for(let i=0;i<14;i++){
+  const b=document.createElement('div');
+  b.className='vbar';
+  b.style.setProperty('--vd',(0.3+Math.random()*0.6).toFixed(2)+'s');
+  b.style.setProperty('--vdl',(Math.random()*0.45).toFixed(2)+'s');
+  vizEl.appendChild(b);
+}
+
+function onCardClick(song,el){
+  el.classList.remove('card-tap');
+  void el.offsetWidth;
+  el.classList.add('card-tap');
+  el.addEventListener('animationend',()=>el.classList.remove('card-tap'),{once:true});
+  if(current&&current.id===song.id){togglePlay();return;}
+  loadSong(song);
+}
+
+function loadSong(song){
+  document.querySelectorAll('.music-card').forEach(c=>c.classList.remove('active'));
+  document.querySelector(`.music-card[data-id="${song.id}"]`).classList.add('active');
+  document.querySelectorAll('.scene-layer').forEach(s=>s.classList.remove('visible'));
+  document.getElementById(song.bg).classList.add('visible');
+  current=song; playing=false;
+  if(audio){audio.pause();audio=null;}
+  clearInterval(progInt);clearInterval(simInt);simT=0;simD=0;
+  buildCave(song);
+  audio=new Audio(song.audio);
+  audio.volume=document.getElementById('vol').value;
+  audio.addEventListener('error',()=>startSim(song));
+  audio.addEventListener('canplay',()=>{audio.play().catch(()=>startSim(song));startRealProg();playing=true;updateBtn();startViz();});
+  audio.addEventListener('ended',()=>{playing=false;updateBtn();stopViz();});
+  audio.load();
+  playing=true;updateBtn();startViz();
+}
+
+function buildCave(song){
+  document.getElementById('cave-info').innerHTML=`
+    <div class="cave-song">${song.title} — ${song.place}</div>
+    <div class="cave-sub">Studies from Australia</div>
+  `;
+  document.getElementById('cave-art').innerHTML=`<span style="font-size:22px;position:relative;z-index:1;">${song.emoji}</span>`;
+  document.getElementById('cave-prog').style.display='flex';
+  document.getElementById('cave-fill').style.width='0%';
+  document.getElementById('t-cur').textContent='0:00';
+  document.getElementById('t-dur').textContent='—:——';
+  document.getElementById('btn-play').onclick=togglePlay;
+  document.getElementById('btn-prev').onclick=()=>loadSong(SONGS[(current.id-1+SONGS.length)%SONGS.length]);
+  document.getElementById('btn-next').onclick=()=>loadSong(SONGS[(current.id+1)%SONGS.length]);
+  document.getElementById('cave-bar').onclick=e=>{
+    const r=e.currentTarget.getBoundingClientRect();
+    const pct=(e.clientX-r.left)/r.width;
+    if(audio&&audio.duration) audio.currentTime=pct*audio.duration;
+    else if(simD) simT=Math.floor(pct*simD);
+  };
+  document.getElementById('vol').oninput=e=>{if(audio)audio.volume=e.target.value;};
+}
+
+function togglePlay(){
+  if(!audio&&!simD)return;
+  playing=!playing;
+  if(audio){playing?audio.play().catch(()=>{}):audio.pause();}
+  updateBtn();
+  playing?startViz():stopViz();
+  const art=document.getElementById('cave-art');
+  playing?art.classList.add('spinning'):art.classList.remove('spinning');
+}
+
+function updateBtn(){
+  const b=document.getElementById('btn-play');
+  if(b) b.textContent=playing?'PAUSE':'PLAY';
+  const art=document.getElementById('cave-art');
+  if(art){ playing?art.classList.add('spinning'):art.classList.remove('spinning'); }
+}
+
+function startViz(){ vizEl.classList.add('on'); }
+function stopViz(){ vizEl.classList.remove('on'); }
+
+function startRealProg(){
+  clearInterval(progInt);
+  progInt=setInterval(()=>{
+    if(!audio||!playing)return;
+    if(audio.duration){
+      document.getElementById('cave-fill').style.width=(audio.currentTime/audio.duration*100)+'%';
+      document.getElementById('t-cur').textContent=fmt(audio.currentTime);
+      document.getElementById('t-dur').textContent=fmt(audio.duration);
+    }
+  },400);
+}
+
+function startSim(song){
+  simD=140+Math.floor(Math.random()*130);
+  document.getElementById('t-dur').textContent=fmt(simD);
+  clearInterval(simInt);
+  simInt=setInterval(()=>{
+    if(!playing)return;
+    simT++;
+    if(simT>=simD){clearInterval(simInt);playing=false;updateBtn();stopViz();return;}
+    document.getElementById('cave-fill').style.width=(simT/simD*100)+'%';
+    document.getElementById('t-cur').textContent=fmt(simT);
+  },1000);
+}
+
+function fmt(s){
+  s=Math.floor(s||0);
+  return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+}
+</script>
+</body>
+</html>
